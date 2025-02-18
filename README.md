@@ -1,13 +1,14 @@
-# VisionRL  
-Training a reinforcement learning agent in a simulator using CNNs for decision-making.  
+# 📚 TutorAI  
+
+Developing intelligent agents that provide tutoring in various subjects using AI techniques.  
 
 ## 🚀 Project Status  
 This project is currently **Under Development**. Stay tuned for updates!  
 
 ## 📌 Goals  
-- Use Convolutional Neural Networks (CNNs) to process visual input.  
-- Train a Reinforcement Learning (RL) agent in a simulated environment.  
-- Optimize decision-making through deep learning techniques.  
+- Develop AI agents capable of tutoring in different academic subjects.  
+- Implement Natural Language Processing (NLP) for interactive learning.  
+- Adapt tutoring strategies based on student progress and feedback.  
 
 ## 🛠️ Setup (Coming Soon)  
 Instructions on setting up the project will be added soon.  
