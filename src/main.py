@@ -11,7 +11,29 @@ from typing import Any, Dict, List
 from datetime import datetime
 
 from dotenv import load_dotenv
+import joblib
 import aiohttp
+
+""" Codigo para el streamlit:
+import asyncio
+from autogen_agentchat.messages import HandoffMessage
+from src.main import research_swarm  # Usa el swarm que ya tienes definido
+from autogen_agentchat.ui import Console
+
+async def obtener_respuesta(mensaje_usuario: str) -> str:
+    # Llama a la función asíncrona del swarm asignando el mensaje del usuario como tarea
+    task_result = await Console(research_swarm.run_stream(task=mensaje_usuario))
+    # Obtiene el último mensaje de la respuesta
+    ultima_mensaje = task_result.messages[-1]
+    if isinstance(ultima_mensaje, HandoffMessage):
+        return ultima_mensaje.content
+    return "Respuesta no reconocida."
+
+if st.button("Enviar"):
+        # Ejecuta la función asíncrona y muestra la respuesta
+        respuesta = asyncio.run(obtener_respuesta(mensaje_usuario))
+        st.write("**Chatbot:**", respuesta)
+"""
 
 # Load environment variables from .env
 load_dotenv()
@@ -25,7 +47,8 @@ if not NEWS_API_KEY:
 # We define the functions (tools) that will be used by the agents
 async def get_news(query: str) -> List[Dict[str, str]]:
     """
-    
+    Tool for getting recent news articles about different subjects from the News API.
+    Returns a list of dictionaries containing title, date, and summary.
     """
     base_url = "https://newsapi.org/v2/everything"
     params = {
@@ -63,17 +86,33 @@ planner = AssistantAgent(
     name="planner",
     model_client=model_client,
     handoffs=["news_analyst", "math_agent", "biologist_agent", "language_agent", "user"],
-    system_message="""
+    system_message="""You are a Strategic Research Planner, responsible for orchestrating multi-disciplinary 
+    research projects by delegating tasks to specialized agents. Your role is to:
 
+    1. **Develop a Comprehensive Plan:** Analyze the research objectives and create a detailed plan that outlines the tasks, rationale, and timeline for the project.
+    2. **Delegate with Precision:** 
+    - **news_analyst:** Tasked with gathering and analyzing news, current events, and media trends.
+    - **math_agent:** Handles quantitative analysis, mathematical modeling, and data evaluation.
+    - **biologist_agent:** Focuses on biological research, scientific studies, and life science inquiries.
+    - **language_agent:** Specializes in linguistic analysis, language data, and communication strategies.
+    3. **Follow a Clear Process:** Always share your complete plan first before assigning any tasks. 
+    Delegate to only one specialist at a time, ensuring your instructions are clear and targeted.
+    4. **Conclude the Process:** After all specialized tasks are completed and the research is consolidated, hand off the final results to the user.
+
+    Maintain clarity, focus, and organization in your communications to ensure efficient collaboration among all agents.
     """
 )
 
 news_analyst = AssistantAgent(
     name="news_analyst",
     model_client=model_client,
-    tools=[],
+    tools=[get_news],
     handoffs=["planner"],
     system_message="""
+    You are a news analyst. Your task is to gather and assess current news articles to support the research on a subject project.
+    - Use the get_news(tool) function to fetch relevant articles.
+    - Analyze the news to identify key trends and insights.
+    Once your analysis is complete, always hand off your findings back to the planner or user.
     """
 )
 
@@ -86,6 +125,12 @@ math_agent = AssistantAgent(
     tools=[],
     handoffs=["planner"],
     system_message="""
+    You are a mathematics expert with a diverse set of skills:
+        1. Explain mathematical concepts and related topics in clear and accessible language.
+        2. Propose practice exercises for users to attempt, without revealing the solutions.
+        3. Solve specific mathematical problems when requested, offering detailed, step-by-step explanations.
+    Adapt your approach based on the user's inquiry to ensure that your responses are both informative and engaging.
+    Once your task is complete, always hand off your results back to the planner or user.
     """
 )
 
@@ -95,6 +140,12 @@ biologist_agent = AssistantAgent(
     tools=[],
     handoffs=["planner"],
     system_message="""
+    You are a biology expert with a diverse set of skills:
+        1. Explain biological concepts and topics in clear, accessible language.
+        2. Propose research exercises or thought experiments for users to explore without providing direct solutions.
+        3. Analyze specific biological questions or research problems with detailed, step-by-step explanations.
+    Adapt your approach based on the user's inquiry to ensure your responses are both informative and engaging.
+    Once your task is complete, always hand off your results back to the planner or user.
     """
 )
 
@@ -104,12 +155,18 @@ language_agent = AssistantAgent(
     tools=[],
     handoffs=["planner"],
     system_message="""
+    You are a language expert with a diverse set of skills:
+        1. Explain linguistic concepts and language-related topics in clear, accessible terms.
+        2. Propose language exercises or challenges for users to attempt without revealing the answers.
+        3. Analyze specific language queries, offering detailed, step-by-step explanations.
+    Adapt your approach based on the user's inquiry to ensure your responses are both informative and engaging.
+    Once your task is complete, always hand off your results back to the planner or user.
     """
 )
 
 # We define the conditions that will trigger the agents
 handoff_termination = HandoffTermination(target="user")
-text_mention_termination = TextMentionTermination()
+text_mention_termination = TextMentionTermination("exit", "quit", "stop", "goodbye", "bye")
 termination = handoff_termination | text_mention_termination
 
 research_swarm = Swarm(
@@ -119,19 +176,17 @@ research_swarm = Swarm(
 
 async def run_swarm_stream() -> None:
     """
+    The script will ask for an initial task, coordinate agent handoffs,
+    and then allow user input whenever a handoff is directed to 'user'.
     """
-    task = input("Please enter the initial task: ")
+    task = input("Hello! I'm your personal tutor. What topic or question do you need help with today?: ")
 
-    # Start the multi-agent conversation with the provided task
     task_result = await Console(research_swarm.run_stream(task=task))
     last_message = task_result.messages[-1]
 
-    # Continue looping if the last message is a Handoff to the user
     while isinstance(last_message, HandoffMessage) and last_message.target == "user":
         user_message = input("User: ")
 
-        # Create a new HandoffMessage that sends the user's reply
-        # back to whoever delegated (last_message.source)
         handoff_message = HandoffMessage(
             source="user",
             target=last_message.source,
