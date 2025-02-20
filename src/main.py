@@ -14,27 +14,6 @@ from dotenv import load_dotenv
 import joblib
 import aiohttp
 
-""" Codigo para el streamlit:
-import asyncio
-from autogen_agentchat.messages import HandoffMessage
-from src.main import research_swarm  # Usa el swarm que ya tienes definido
-from autogen_agentchat.ui import Console
-
-async def obtener_respuesta(mensaje_usuario: str) -> str:
-    # Llama a la función asíncrona del swarm asignando el mensaje del usuario como tarea
-    task_result = await Console(research_swarm.run_stream(task=mensaje_usuario))
-    # Obtiene el último mensaje de la respuesta
-    ultima_mensaje = task_result.messages[-1]
-    if isinstance(ultima_mensaje, HandoffMessage):
-        return ultima_mensaje.content
-    return "Respuesta no reconocida."
-
-if st.button("Enviar"):
-        # Ejecuta la función asíncrona y muestra la respuesta
-        respuesta = asyncio.run(obtener_respuesta(mensaje_usuario))
-        st.write("**Chatbot:**", respuesta)
-"""
-
 # Load environment variables from .env
 load_dotenv()
 
