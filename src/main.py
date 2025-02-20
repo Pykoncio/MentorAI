@@ -166,35 +166,35 @@ language_agent = AssistantAgent(
 
 # We define the conditions that will trigger the agents
 handoff_termination = HandoffTermination(target="user")
-text_mention_termination = TextMentionTermination("exit", "quit", "stop", "goodbye", "bye")
+text_mention_termination = TextMentionTermination("TERMINATE")
 termination = handoff_termination | text_mention_termination
 
 research_swarm = Swarm(
     participants=[planner, news_analyst, math_agent, biologist_agent, language_agent],
-    termination=termination,
+    #termination=termination,
 )
 
-async def run_swarm_stream() -> None:
-    """
-    The script will ask for an initial task, coordinate agent handoffs,
-    and then allow user input whenever a handoff is directed to 'user'.
-    """
-    task = input("Hello! I'm your personal tutor. What topic or question do you need help with today?: ")
+# async def run_swarm_stream() -> None:
+#     """
+#     The script will ask for an initial task, coordinate agent handoffs,
+#     and then allow user input whenever a handoff is directed to 'user'.
+#     """
+#     task = input("Hello! I'm your personal tutor. What topic or question do you need help with today?: ")
 
-    task_result = await Console(research_swarm.run_stream(task=task))
-    last_message = task_result.messages[-1]
+#     task_result = await Console(research_swarm.run_stream(task=task))
+#     last_message = task_result.messages[-1]
 
-    while isinstance(last_message, HandoffMessage) and last_message.target == "user":
-        user_message = input("User: ")
+#     while isinstance(last_message, HandoffMessage) and last_message.target == "user":
+#         user_message = input("User: ")
 
-        handoff_message = HandoffMessage(
-            source="user",
-            target=last_message.source,
-            content=user_message
-        )
+#         handoff_message = HandoffMessage(
+#             source="user",
+#             target=last_message.source,
+#             content=user_message
+#         )
 
-        task_result = await Console(research_swarm.run_stream(task=handoff_message))
-        last_message = task_result.messages[-1]
+#         task_result = await Console(research_swarm.run_stream(task=handoff_message))
+#         last_message = task_result.messages[-1]
 
-if __name__ == "__main__":
-    asyncio.run(run_swarm_stream())
+# if __name__ == "__main__":
+#     asyncio.run(run_swarm_stream())
