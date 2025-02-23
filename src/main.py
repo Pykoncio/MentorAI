@@ -9,10 +9,13 @@ import asyncio
 import os
 from typing import Any, Dict, List
 from datetime import datetime
+# from flask import Flask, render_template, request, jsonify
 
 from dotenv import load_dotenv
 import joblib
 import aiohttp
+# import nest_asyncio
+# nest_asyncio.apply()
 
 # Load environment variables from .env
 load_dotenv()
@@ -150,8 +153,41 @@ termination = handoff_termination | text_mention_termination
 
 research_swarm = Swarm(
     participants=[planner, news_analyst, math_agent, biologist_agent, language_agent],
-    #termination=termination,
+    termination_condition=termination,
 )
+
+# app = Flask(__name__)
+
+# @app.route("/api/chat", methods=["POST"])
+# async def chat():
+#     data = request.get_json()
+#     mensaje_usuario = data.get("mensaje_usuario")
+#     resultado_tarea = None
+#     async for task in research_swarm.on_messages_stream(task=mensaje_usuario):
+#         print(task)
+#         resultado_tarea = task
+
+#     mensajes_buenos = [msg for msg in resultado_tarea.messages if not isinstance(msg.content, list) and "Transferred to user" not in msg.content]
+#     ultimo_mensaje = mensajes_buenos[-1]
+#     print(ultimo_mensaje)
+
+    # if isinstance(ultimo_mensaje, HandoffMessage):
+    # handoff_message = HandoffMessage(
+    #     source="user",
+    #     target=ultimo_mensaje.source,
+    #     content="TERMINATE"
+    # )
+    # async for message in research_swarm.run_stream(task=handoff_message):
+    #     print(message)
+
+#     return jsonify({"mensaje_usuario": ultimo_mensaje.content, "success": True})
+
+# @app.route("/")
+# async def home():
+#     return render_template("index.html")
+
+# if __name__ == "__main__":
+#     app.run(debug=True)
 
 # async def run_swarm_stream() -> None:
 #     """

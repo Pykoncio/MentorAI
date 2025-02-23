@@ -4,3 +4,5 @@ python-dotenv
 aiohttp==3.11.11
 joblib
 streamlit
+# flask[async]
+# nest_asyncio
