@@ -1,4 +1,4 @@
-# 📚 TutorAI  
+# 📚 MentorAI  
 
 Developing intelligent agents that provide tutoring in various subjects using AI techniques.  
 
