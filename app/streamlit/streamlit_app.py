@@ -10,6 +10,21 @@ st.title("MentorAI Chat")
 # Campo de entrada para la pregunta
 question = st.text_input("Escribe tu pregunta en inglés:")
 
+# Incializar el sidebar
+st.sidebar.title("Historial de chats")
+
+"""Para almacenar los diferentes chats con sus diferentes preguntas y respuestas,
+se debe crear una matriz cuadrada en donde en cada fila se almacene un diccionario
+con la pregunta y la respuesta."""
+
+# Lista de chats creados
+if "list_chats" not in st.session_state:
+    st.session_state.list_chats = []
+    st.session_state.answer = None
+
+for chat in st.session_state.list_chats:
+    st.sidebar.button(chat, type="tertiary")
+
 # Botón para enviar la pregunta
 if st.button("Enviar"):
     if question:
@@ -18,8 +33,15 @@ if st.button("Enviar"):
         
         if response.status_code == 200:
             data = response.json()
-            st.success(f"Respuesta: {data['message']}")
+            st.session_state.answer = f"Respuesta: {data['message']}"
+            st.success(st.session_state.answer)
+
+            # Almacenamos la pregunta en el historial
+            st.session_state.list_chats.append(question)
         else:
-            st.error("Error al obtener la respuesta. Inténtalo de nuevo.")
+            st.session_state.answer = "Error al obtener la respuesta. Inténtalo de nuevo."
+            st.error(st.session_state.answer)
     else:
-        st.warning("Por favor, escribe una pregunta.")
+        st.session_state.answer = "Por favor, escribe una pregunta."
+        st.warning(st.session_state.answer)
+    st.rerun()
