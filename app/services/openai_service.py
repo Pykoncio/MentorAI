@@ -10,9 +10,9 @@ class OpenAIService:
     
     async def get_completion(self, prompt: str) -> str:
         try:
-            logger.info(f"Sending prompt to OpenAI")
+            logger.info(f"Sending prompt to OpenAI...")
             response = await self.client.chat.completions.create(
-                model="gpt-4",
+                model="gpt-4o-mini",
                 messages=[{"role": "user", "content": prompt}],
                 temperature=0.7
             )

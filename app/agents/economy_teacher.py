@@ -2,12 +2,12 @@ from app.services.openai_service import OpenAIService
 from app.agents.news_agent import NewsAgent
 import datetime
 
-class LanguageTeacher:
+class EconomyTeacher:
     def __init__(self):
         self.openai_service = OpenAIService()
         self.news_agent = NewsAgent()
-        self.teacher_name = "Language Teacher"
-        self.subject = "language"
+        self.teacher_name = "Economy Teacher"
+        self.subject = "economy"
     
     async def answer(self, question: str) -> str:
         keywords = [
@@ -20,10 +20,10 @@ class LanguageTeacher:
         
         extra_info = ""
         if any(keyword in question.lower() for keyword in keywords):
-            news_data = await self.news_agent.get_news("Latest Linguistic Research")
+            news_data = await self.news_agent.get_news("Latest Economic Trends")
 
             if news_data:
-                extra_info_lines = ["\nLatest Linguistic News:"]
+                extra_info_lines = ["\nLatest Economic News:"]
                 for idx, article in enumerate(news_data, start=1):
                     extra_info_lines.append(f"\nArticle {idx}:")
                     extra_info_lines.append(f"Title: {article.get('title')}")
@@ -38,10 +38,11 @@ class LanguageTeacher:
         current_date = datetime.datetime.now().strftime("%B %d, %Y")
 
         prompt = f"""
-            You are a language expert with deep insights into linguistics, grammar, literature, and language acquisition.
-            Provide clear, structured, and engaging explanations.
-            If the user asks for exercises, suggest some without revealing the answers.
-            If relevant, incorporate the latest linguistic research provided below.
+            You are an economy expert with deep insights into microeconomics, macroeconomics, financial markets, and global economic trends.
+            Provide real-world examples to help users understand abstract concepts.
+            If the user asks for exercises, suggest some exercises to solve without revealing the answers.
+            Your answer should be clear, structured, and pedagogical.
+            If relevant, incorporate the latest economic news provided below.
             -------------------------------------------------
             Current Date: {current_date}
             News Update:
