@@ -13,17 +13,25 @@ question = st.text_input("Escribe tu pregunta en inglés:")
 # Incializar el sidebar
 st.sidebar.title("Historial de chats")
 
-"""Para almacenar los diferentes chats con sus diferentes preguntas y respuestas,
-se debe crear una matriz cuadrada en donde en cada fila se almacene un diccionario
-con la pregunta y la respuesta."""
+# Para almacenar los diferentes chats con sus diferentes preguntas y respuestas,
+# se debe crear una matriz cuadrada en donde en cada fila se almacene un diccionario
+# con la pregunta y la respuesta.
 
-# Lista de chats creados
-if "list_chats" not in st.session_state:
-    st.session_state.list_chats = []
+# Variables de estado
+if "list_chats" not in st.session_state and "answer" not in st.session_state and "chat_cont" not in st.session_state:
+    st.session_state.list_chats = [[]]
     st.session_state.answer = None
+    st.session_state.chat_cont = 0
 
+# Botón para crear un nuevo chat
+if st.sidebar.button("Nuevo chat") and st.session_state.chat_cont < len(st.session_state.list_chats):
+    st.session_state.list_chats.append([])
+    st.session_state.chat_cont += 1
+
+# Botones para seleccionar el chat
 for chat in st.session_state.list_chats:
-    st.sidebar.button(chat, type="tertiary")
+    print(chat)
+    st.sidebar.button(chat[0]['pregunta'], type="tertiary", key=f"chat_{st.session_state.chat_cont}")
 
 # Botón para enviar la pregunta
 if st.button("Enviar"):
@@ -36,8 +44,10 @@ if st.button("Enviar"):
             st.session_state.answer = f"Respuesta: {data['message']}"
             st.success(st.session_state.answer)
 
-            # Almacenamos la pregunta en el historial
-            st.session_state.list_chats.append(question)
+            # Guardamos en la lista de chats la pregunta y la respuesta
+            st.session_state.list_chats[st.session_state.chat_cont].append({"pregunta": question, "respuesta": data["message"]})
+            print(st.session_state.list_chats)
+            print(st.session_state.chat_cont)
         else:
             st.session_state.answer = "Error al obtener la respuesta. Inténtalo de nuevo."
             st.error(st.session_state.answer)
