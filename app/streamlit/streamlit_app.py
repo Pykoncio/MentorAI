@@ -12,10 +12,10 @@ if "list_chats" not in st.session_state:
 if "actual_chat" not in st.session_state:
     st.session_state.actual_chat = 0
 
-if st.sidebar.button("New chat") and len(st.session_state.list_chats[0]) > 0:
-    print(st.session_state.list_chats)
+# Si el chat actual está guardado con mensajes, se puede iniciar uno nuevo
+if st.sidebar.button("New chat", icon=":material/add:") and len(st.session_state.list_chats[st.session_state.actual_chat]) > 0:
     st.session_state.list_chats.insert(0, [])
-    print(st.session_state.list_chats)
+    st.session_state.actual_chat = 0
 
 # if "messages" not in st.session_state:
 #     st.session_state.messages = []  
@@ -58,5 +58,14 @@ if prompt := st.chat_input("Ask me something"):
 for i in range(len(st.session_state.list_chats)):
     if len(st.session_state.list_chats[i]) > 0:
         if st.sidebar.button(st.session_state.list_chats[i][0]['content'], type="tertiary", key=f"chat_{i}"):
-            st.session_state.actual_chat = i
+            print(f"Total de chats: {len(st.session_state.list_chats)}")
+            print(f"Chat actual: {st.session_state.list_chats[st.session_state.actual_chat]}")
+
+            # Si actualmente estoy en un chat nuevo sin mensajes, lo borro y paso al seleccionado en el sidebar
+            if st.session_state.list_chats[st.session_state.actual_chat] == []:
+                print("Borrando chat...")
+                st.session_state.list_chats.pop(st.session_state.actual_chat)
+                st.session_state.actual_chat = i - 1
+            else:
+                st.session_state.actual_chat = i
             st.rerun()
