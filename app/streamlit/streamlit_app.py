@@ -5,12 +5,24 @@ st.set_page_config(page_title="MentorAI Chat", page_icon=":robot_face:")
 
 st.title("MentorAI Chat")
 
-if "messages" not in st.session_state:
-    st.session_state.messages = []  
+st.sidebar.title("Chat History")
+
+if "list_chats" not in st.session_state:
+    st.session_state.list_chats = [[]] # Directamente meto aquí los mensajes de cada chat
+if "actual_chat" not in st.session_state:
+    st.session_state.actual_chat = 0
+
+if st.sidebar.button("New chat") and len(st.session_state.list_chats[0]) > 0:
+    print(st.session_state.list_chats)
+    st.session_state.list_chats.insert(0, [])
+    print(st.session_state.list_chats)
+
+# if "messages" not in st.session_state:
+#     st.session_state.messages = []  
 if "current_question" not in st.session_state:
     st.session_state.current_question = ""
 
-for message in st.session_state.messages:
+for message in st.session_state.list_chats[st.session_state.actual_chat]:
     if message["role"] == "user":
         with st.chat_message("user"):
             st.markdown(message["content"])
@@ -20,7 +32,7 @@ for message in st.session_state.messages:
 
 if prompt := st.chat_input("Ask me something"):
     st.session_state.current_question = prompt
-    st.session_state.messages.append({"role": "user", "content": prompt})
+    st.session_state.list_chats[st.session_state.actual_chat].append({"role": "user", "content": prompt})
 
     with st.chat_message("user"):
         st.markdown(prompt)
@@ -34,7 +46,7 @@ if prompt := st.chat_input("Ask me something"):
         message = data.get("message", "No answer")
         bot_response = f"**{teacher}:** {message}"
         
-        st.session_state.messages.append({"role": "bot", "content": bot_response})
+        st.session_state.list_chats[st.session_state.actual_chat].append({"role": "bot", "content": bot_response})
 
         with st.chat_message("Assistant", avatar="🤖"):
             st.markdown(bot_response)
@@ -42,3 +54,9 @@ if prompt := st.chat_input("Ask me something"):
 
     else:
         st.error("Error fetching the response. Please try again.")
+
+for i in range(len(st.session_state.list_chats)):
+    if len(st.session_state.list_chats[i]) > 0:
+        if st.sidebar.button(st.session_state.list_chats[i][0]['content'], type="tertiary", key=f"chat_{i}"):
+            st.session_state.actual_chat = i
+            st.rerun()
