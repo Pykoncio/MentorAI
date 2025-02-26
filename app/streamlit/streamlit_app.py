@@ -1,5 +1,14 @@
 import streamlit as st
 import requests
+import sys
+import os
+import pymysql
+from sqlalchemy import text
+core_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "core"))
+sys.path.append(core_path)
+from config import settings
+
+pymysql.install_as_MySQLdb()
 
 st.set_page_config(page_title="MentorAI Chat", page_icon=":robot_face:")
 
@@ -22,6 +31,14 @@ if st.sidebar.button("New chat", icon=":material/add:") and len(st.session_state
 if "current_question" not in st.session_state:
     st.session_state.current_question = ""
 
+conn = st.connection("sql",
+    dialect="mysql",
+    host=settings.HOST,
+    username=settings.USER,
+    password=settings.PASSWORD,
+    database=settings.DATABASE,
+    port=settings.PORT)
+
 for message in st.session_state.list_chats[st.session_state.actual_chat]:
     if message["role"] == "user":
         with st.chat_message("user"):
@@ -33,6 +50,18 @@ for message in st.session_state.list_chats[st.session_state.actual_chat]:
 if prompt := st.chat_input("Ask me something"):
     st.session_state.current_question = prompt
     st.session_state.list_chats[st.session_state.actual_chat].append({"role": "user", "content": prompt})
+
+    create_table = text("""CREATE TABLE IF NOT EXISTS messages (
+               id INT AUTO_INCREMENT PRIMARY KEY,
+               role VARCHAR(50) NOT NULL,
+               content VARCHAR(1000) NOT NULL);""")
+    insert = text(f"""INSERT INTO messages (role, content) VALUES ("user", "{prompt}")""")
+
+    with conn.session as session:
+        session.execute(create_table)
+        session.commit()
+        session.execute(insert)
+        session.commit()
 
     with st.chat_message("user"):
         st.markdown(prompt)
@@ -47,6 +76,11 @@ if prompt := st.chat_input("Ask me something"):
         bot_response = f"**{teacher}:** {message}"
         
         st.session_state.list_chats[st.session_state.actual_chat].append({"role": "bot", "content": bot_response})
+
+        insert = text(f"""INSERT INTO messages (role, content) VALUES ("bot", "{message[:1000]}")""")
+        with conn.session as session:
+            session.execute(insert)
+            session.commit()
 
         with st.chat_message("Assistant", avatar="🤖"):
             st.markdown(bot_response)
