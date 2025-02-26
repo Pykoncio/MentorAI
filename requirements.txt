@@ -69,3 +69,5 @@ uvicorn==0.24.0
 watchdog==6.0.0
 xgboost==2.1.4
 yarl==1.18.3
+sqlalchemy
+pymysql
