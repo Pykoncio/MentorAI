@@ -37,7 +37,7 @@ if prompt := st.chat_input("Ask me something"):
     with st.chat_message("user"):
         st.markdown(prompt)
 
-    response = requests.post("http://127.0.0.1:8000/chat", json={"message": st.session_state.current_question})            
+    response = requests.post("http://fastapi:8000/chat", json={"message": st.session_state.current_question})            
 
     if response.status_code == 200:
         data = response.json()

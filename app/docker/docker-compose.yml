@@ -1,0 +1,18 @@
+services:
+  streamlit:
+    build:
+      context: "../../"
+      dockerfile: "app/docker/Dockerfile.streamlit"
+    ports:
+      - "8501:8501"
+    env_file:
+      - "../../.env"
+
+  fastapi:
+    build:
+      context: "../../"
+      dockerfile: "app/docker/Dockerfile.fastapi"
+    ports:
+      - "8000:8000"
+    env_file:
+      - "../../.env"
