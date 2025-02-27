@@ -1,13 +1,13 @@
 services:
-  streamlit:
-    build:
-      context: "../../"
-      dockerfile: "app/docker/Dockerfile.streamlit"
-    ports:
-      - "8501:8501"
+  mysql:
+    image: mysql:8
+    restart: always
     env_file:
       - "../../.env"
-
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
   fastapi:
     build:
       context: "../../"
@@ -16,3 +16,21 @@ services:
       - "8000:8000"
     env_file:
       - "../../.env"
+    depends_on:
+      - mysql
+  streamlit:
+    build:
+      context: "../../"
+      dockerfile: "app/docker/Dockerfile.streamlit"
+    ports:
+      - "8501:8501"
+    env_file:
+      - "../../.env"
+    depends_on:
+      - mysql
+      - fastapi
+    volumes:
+      - ../../output:/app/output
+
+volumes:
+  mysql_data:
