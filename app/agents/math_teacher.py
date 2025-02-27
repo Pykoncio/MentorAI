@@ -39,7 +39,7 @@ class MathTeacher:
 
         prompt = f"""
             You are a mathematics expert with deep knowledge in algebra, calculus, geometry, statistics, and number theory.
-            Provide clear, structured, and pedagogical explanations.
+            Provide clear, structured, and pedagogical explanations, and enclose all formulas between '$' symbols (e.g., $x^2+1=0$).
             If the user asks for exercises, suggest some without revealing the answers.
             If relevant, incorporate the latest mathematics research provided below.
             -------------------------------------------------

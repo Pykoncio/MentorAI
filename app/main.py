@@ -6,18 +6,15 @@ from app.schemas.chat import ChatRequest, ChatResponse
 import logging
 from typing import Dict, Any
 
-# Configure server logging
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 
-# API Configuration
 app = FastAPI(
     title="MentorAI",
     description="API for a virtual tutoring system with multiple agents",
     version="1.0.0",
 )
 
-# CORS Configuration
 origins = [
     "http://localhost",
     "http://localhost:8000",
@@ -32,7 +29,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Initialize planner globally
 planner = Planner()
 
 @app.get("/", response_model=Dict[str, Any])

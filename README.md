@@ -1,193 +1,198 @@
-# 📚 MentorAI
+# 📚 **MentorAI**
 
-MentorAI es un sistema de tutoría virtual que utiliza agentes inteligentes para proporcionar tutoría en diversas materias académicas utilizando técnicas de inteligencia artificial.
+MentorAI is a virtual tutoring system that utilizes intelligent agents to provide tutoring in various academic subjects using artificial intelligence techniques.
 
-## 📌 Objetivos
+# 👥 Contributors
+Jesus Ruiz Toledo – [Github](https://github.com/jesusruiztoledo) – Email: jesusruiz2829@gmail.com – Contribution: 33.3%
 
-- Desarrollar agentes de IA capaces de tutorizar en diferentes materias académicas.
-- Implementar Procesamiento de Lenguaje Natural (NLP) para un aprendizaje interactivo.
-- Adaptar las estrategias de tutoría basadas en el progreso y la retroalimentación del estudiante.
+Hugo Peralta Muñoz - [Github](https://github.com/Pykoncio) – Email: hugoperalta2003@gmail.com – Contribution: 33.3%
 
-## 🛠️ Configuración
+Borja Bravo Casermeiro – [Github](https://github.com/boorjabraavo21) – Email: borjabravo07@gmail.com – Contribution: 33.3%
 
-### Requisitos
+## 📌 Objectives
+- Develop AI agents capable of tutoring in various academic subjects.
+- Implement Natural Language Processing (NLP) for interactive learning.
+- Enhance scalability and performance through containerized deployment with Docker.
+- Provide real-time news updates and external API integrations to keep content relevant.
 
-- Python 3.11.9
-- Instalar las dependencias del proyecto:
+MentorAI is a virtual tutoring system that utilizes intelligent agents to provide tutoring in a variety of academic subjects using advanced artificial intelligence techniques.
 
-```sh
-pip install -r requirements.txt
-```
+## 🛠️ **Installation Guide with Docker**
 
-### Variables de entorno
+This is the easiest way to install and run MentorAI using Docker and Docker Compose.
 
-Crear un archivo `.env` en la raiz del proyecto con las siguientes variables:
+### **Requirements**
 
-```sh
-OPENAI_API_KEY=tu_clave_de_openai
-NEWS_API_KEY=tu_clave_de_newsapi
-```
+- Docker
+- Docker Compose
 
-### Ejecuciión del Proyecto
+### **Installation**
 
-Para iniciar el servidor FastAPI:
+1. Create an `.env` file in the root of the project with the following variables:
 
 ```sh
-uvicorn app.main:app --reload
-```
+OPENAI_API_KEY=your_openai_key
+NEWS_API_KEY=your_newsapi_key
+MYSQL_HOST=your_mysql_host
+MYSQL_USER=your_mysql_user
+MYSQL_PASSWORD=your_mysql_password
+MYSQL_ROOT_PASSWORD=your_mysql_root_password
+MYSQL_DATABASE=your_mysql_database
+``` 
 
-Para iniciar la aplicación de Streamlit:
+2. Start the containers by running the following command from the project's root directory:
+
+`docker-compose -f app/docker/docker-compose.yml up --build`
+
+This will start the FastAPI server on port 8000 and the Streamlit application on port 8501, as well as the MySQL server on the port 3307.
+
+## **Installation Guide without Docker (Not Recommended)**
+
+### **Requirements:**
+
+- Python 3.11
+- A running database with the characteristics defined below.
+- All project dependencies installed.
+
+**Create a virtual environment**
+1. Create the virtual environment:
+`python -m venv venv`
+
+2. Activate the virtual environment:
+    * On Windows: 
+        ```terminal
+        venv/Scripts/activate
+        ```
+
+    * On macOS/Linux:
+        ```terminal
+        source venv/bin/activate
+        ```
+
+3. Install the project dependencies:
+
+    `pip install -r requirements.txt`
+
+### **Environment Variables**
+Create an `.env` file in the root of the project with the following variables:
 
 ```sh
-streamlit run app/streamlit/streamlit_app.py
-```
+OPENAI_API_KEY=your_openai_key
+NEWS_API_KEY=your_newsapi_key
+MYSQL_HOST=your_mysql_host
+MYSQL_USER=your_mysql_user
+MYSQL_PASSWORD=your_mysql_password
+MYSQL_ROOT_PASSWORD=your_mysql_root_password
+MYSQL_DATABASE=your_mysql_database
+``` 
 
-### 📂 Estructura del Proyecto
+> [!NOTE]  
+> When running without Docker, ensure that you have a database set up with the above characteristics.
 
+#### Running the Project
+To start the FastAPI server:
+
+`uvicorn app.main:app --reload`
+
+To start the Streamlit application:
+
+`streamlit run app/streamlit/streamlit_app.py`
+
+## 📂 **Project Structure**
 ```markdown
-app/
-    __init__.py
-    agents/
-        __init__.py
-        biology_teacher.py
-        chemistry_teacher.py
-        economy_teacher.py
-        history_teacher.py
-        languaje_teacher.py
-        math_teacher.py
-        news_agent.py
-        physics_teacher.py
-        planner.py
-        programming_teacher.py
-    core/
-        __init__.py
-        config.py
-    main.py
-    models/
-        __init__.py
-        filtering_model/
-    schemas/
-        __init__.py
-        chat.py
-    services/
-        __init__.py
-        filtering_service.py
-        openai_service.py
-    streamlit/
-        streamlit_app.py
-README.md
-requirements.txt
-.gitignore
+.env  
+.gitignore  
+app/  
+├── __init__.py  
+├── agents/  
+│   ├── __init__.py  
+│   ├── biology_teacher.py  
+│   ├── chemistry_teacher.py  
+│   ├── economy_teacher.py  
+│   ├── history_teacher.py  
+│   ├── languaje_teacher.py  
+│   ├── math_teacher.py  
+│   ├── news_agent.py  
+│   ├── physics_teacher.py  
+│   ├── planner.py  
+│   └── programming_teacher.py  
+├── core/  
+│   ├── __init__.py  
+│   └── config.py  
+├── docker/  
+│   ├── docker-compose.yml  
+│   ├── Dockerfile.fastapi  
+│   └── Dockerfile.streamlit  
+├── main.py  
+├── models/  
+│   ├── __init__.py  
+│   └── filtering_model/  
+│       ├── filter_model_badwords.ipynb  
+│       └── toxic_classifier.joblib  
+├── schemas/  
+│   ├── __init__.py  
+│   └── chat.py  
+├── services/  
+│   ├── __init__.py  
+│   ├── filtering_service.py  
+│   └── openai_service.py  
+└── streamlit/  
+    └── streamlit_app.py  
+output/  
+└── messages_output.csv  
+README.md  
+requirements.txt  
 ```
 
-## 📄 Descripción de Archivos
 
-### `main.py`
+## 📄 **File Descriptions**
+`main.py`
+This is the main file that configures and runs the FastAPI server. It contains the endpoints configuration and application initialization.
 
-Archivo principal que configura y ejecuta el servidor FastAPI. Este archivo contiene la configuración de los endpoints y la inicialización de la aplicación.
+`agents`
+This directory contains the tutoring agents for different subjects. Each agent is responsible for providing answers and tutoring in its specific subject area:
 
-### `agents`
+* `biology_teacher.py`: Biology tutoring agent.
+* `chemistry_teacher.py`: Chemistry tutoring agent.
+* `economy_teacher.py`: Economy tutoring agent.
+* `history_teacher.py`: History tutoring agent.
+* `language_teacher.py`: Language tutoring agent.
+* `math_teacher.py`: Mathematics tutoring agent.
+* `news_agent.py`: News agent providing updated information.
+* `physics_teacher.py`: Physics tutoring agent.
+* `planner.py`: Planning agent that helps organize study sessions.
+* `programming_teacher.py`: Programming tutoring agent.
 
-Contiene los agentes de tutoría para diferentes materias. Cada agente es responsable de proporcionar respuestas y tutoría en su área específica:
+`config.py` 
 
-- `biology_teacher.py`: Agente de tutoría en biología.
-- `chemistry_teacher.py`: Agente de tutoría en química.
-- `economy_teacher.py`: Agente de tutoría en economía.
-- `history_teacher.py`: Agente de tutoría en historia.
-- `languaje_teacher.py`: Agente de tutoría en lenguaje.
-- `math_teacher.py`: Agente de tutoría en matemáticas.
-- `news_agent.py`: Agente de noticias que proporciona información actualizada.
-- `physics_teacher.py`: Agente de tutoría en física.
-- `planner.py`: Agente planificador que ayuda a organizar el estudio.
-- `programming_teacher.py`: Agente de tutoría en programación.
+This file uses pydantic to configure the project. It defines the global configurations and the environment variables required for the project to work.
 
-### `config.py`
+`models`
 
-Configuración del proyecto utilizando `pydantic`. Este archivo define las configuraciones globales y las variables de entorno necesarias para el funcionamiento del proyecto.
+Contains the models used in the project, including the model to filter inappropriate language. These models structure and validate the data used within the application.
 
-### `models`
+`schemas`
 
-Contiene los modelos utilizados en el proyecto, incluyendo el modelo de filtrado de lenguaje soez. Estos modelos son utilizados para estructurar y validar los datos que se manejan en la aplicación.
+Defines data schemas using pydantic. These schemas are used to validate and structure the incoming requests and outgoing responses from the endpoints:
 
-### `schemas`
+* `chat.py:` Schema for chat requests and responses.
 
-Define los esquemas de datos utilizando `pydantic`. Estos esquemas son utilizados para validar y estructurar las solicitudes y respuestas de los endpoints:
+`services`
 
-- `chat.py`: Esquema para las solicitudes y respuestas del chat.
+This directory contains the services used by the agents, including the OpenAI service and the filtering service. These services encapsulate business logic and interactions with external APIs:
 
-### `services`
+* `filtering_service.py`: Service for filtering inappropriate language.
+* `openai_service.py`: Service for interacting with the OpenAI API.
 
-Contiene los servicios utilizados por los agentes, incluyendo el servicio de OpenAI y el servicio de filtrado. Estos servicios encapsulan la lógica de negocio y las interacciones con APIs externas:
+`streamlit_app.py`
 
-- `filtering_service.py`: Servicio para filtrar lenguaje inapropiado.
-- `openai_service.py`: Servicio para interactuar con la API de OpenAI.
+The Streamlit application provides a graphical interface for interacting with the tutoring system. It includes a chat where users can input questions and displays the conversation history during the session.
 
-### `streamlit_app.py`
+## 📚 Bibliography
+* [Streamlit Documentation](https://docs.streamlit.io/)
 
-Aplicación Streamlit para interactuar con el sistema de tutoría. Esta aplicación proporciona una interfaz gráfica para que los usuarios puedan interactuar con los agentes de tutoría. Contiene un chat donde ingresar la pregunta y un historial con las conversaciones anteriores almacenadas en la sesión.
+* [FastAPI Documentation](https://fastapi.tiangolo.com/)
 
-## 📝 Ejemplos de Uso
+* [Docker Documentation](https://docs.docker.com/)
 
-### Endpoint de Chat
-
-Para interactuar con los agentes de tutoría, puedes enviar una solicitud POST al endpoint `/chat` con el siguiente formato:
-
-```json
-{
-    "message": "What you know about Roman Empire?"
-}
-```
-
-La respuesta incluirá el mensaje del agente de tutoría correspondiente.
-
-### Interfaz Web
-
-Puedes acceder a una interfaz web simple para probar el chat en el endpoint `/chat`.
-
-### Aplicación de Streamlit
-
-Para ejecutar la aplicación de Streamlit 
-
-## 🧪 Pruebas
-
-### Pruebas Unitarias
-Para ejecutar las pruebas unitarias, utiliza el siguiente comando:
-
-```sh
-pytest
-```
-
-### Cobertura de Pruebas
-Para generar un informe de cobertura de pruebas, utiliza el siguiente comando:
-
-```sh
-pytest --cov=app
-```
-
-## 📜 Licencia
-RELLENAR.
-
-## 👥 Contribuciones
-
-Las contribuciones son bienvenidas. Si deseas contribuir, por favor sigue los siguientes pasos:
-
-1. Haz un fork del repositorio.
-2. Crea una nueva rama (`git checkout -b feature/nueva-funcionalidad`).
-3. Realiza tus cambios y haz commit (`git commit -am 'Añadir nueva funcionalidad'`).
-4. Sube tus cambios (`git push origin feature/nueva-funcionalidad`).
-5. Abre un Pull Request.
-
-## 📧 Contacto
-Para cualquier consulta o sugerencia, puedes contactarnos a través de:
-
-- Email: RELLENAR
-- GitHub: MentorAI
-
-## 🌟 Agradecimientos
-
-RELLENAR
-
-
-
-
-
+* [Mini-course on SQLAlchemy](https://www.youtube.com/watch?v=XSAjQDM8ZS4)
