@@ -1,5 +1,7 @@
 # 📚 **MentorAI**
 
+<img src="https://drive.google.com/uc?id=1mzgfusMIpaVrHRGtVSgGEr7EyiA_T6gs"/>
+
 MentorAI is a virtual tutoring system that utilizes intelligent agents to provide tutoring in various academic subjects using artificial intelligence techniques.
 
 # 👥 Contributors
