@@ -14,6 +14,18 @@ core_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "core"
 sys.path.append(core_path)
 from config import settings
 
+teacher_icons = {
+    "physics": "🔭",        
+    "mathematics": "➗",            
+    "chemistry": "⚗️",      
+    "biology": "🧬",        
+    "history": "📜",        
+    "language": "🗣️",      
+    "economy": "💰",       
+    "programming": "💻",
+    "other": "🤖"     
+}
+
 def remove_markdown(text):
    # Remove inline code formatting and return only the inner text.
     text = re.sub(r'`(.+?)`', r'\1', text)
@@ -50,12 +62,21 @@ def cargar_css(path):
 
 pymysql.install_as_MySQLdb()
 
-st.set_page_config(page_title="MentorAI Chat", page_icon=":robot_face:")
+st.set_page_config(page_title="MentorAI Chat", page_icon="🎓")
 
 path = pathlib.Path("app/streamlit/styles/styles.css")
 cargar_css(path)
 
 st.title("MentorAI Chat")
+col1, col2 = st.columns([1, 4])
+
+with col1:
+    st.image("logo_mentorai.png", width=200)
+
+with col2:
+    st.title("MentorAI Chat")
+
+st.markdown("Ask questions across multiple subjects and get specialized assistance from subject-matter experts")
 
 st.sidebar.title("Chat History")
 
@@ -83,8 +104,22 @@ for message in st.session_state.list_chats[st.session_state.actual_chat]:
         with st.chat_message("user", avatar="👤"):
             st.markdown(message["content"])
     else:
-        with st.chat_message("bot", avatar="🤖"):
-            st.markdown(message["content"], )
+        if "subject" in message:
+            subject = message["subject"]
+        else:
+            # Having the format "**Teacher:** Message"
+            teacher_match = re.match(r'\*\*(.*?):\*\*', message["content"])
+            teacher_name = teacher_match.group(1) if teacher_match else "❓ Teacher"
+            subject = "other"  # Default
+            
+            for subj, _ in teacher_icons.items():
+                if subj.lower() in teacher_name.lower():
+                    subject = subj
+                    break
+        
+        icon = teacher_icons.get(subject, teacher_icons.get("other"))
+        with st.chat_message("bot", avatar=icon):
+            st.markdown(message["content"])
 
 if prompt := st.chat_input("Ask me something", key="chat_input"):
     st.session_state.current_question = prompt
@@ -108,7 +143,8 @@ if prompt := st.chat_input("Ask me something", key="chat_input"):
     with st.chat_message("user", avatar="👤"):
         st.markdown(prompt)
 
-    response = requests.post("http://fastapi:8000/chat", json={"message": st.session_state.current_question})            
+    with st.spinner("Loading the response... ⏳"):
+        response = requests.post("http://fastapi:8000/chat", json={"message": st.session_state.current_question})            
 
     if response.status_code == 200:
         data = response.json()
@@ -116,9 +152,13 @@ if prompt := st.chat_input("Ask me something", key="chat_input"):
         subject = data.get("subject", "Subject")
         message = data.get("message", "No answer")
         bot_response = f"**{teacher}:** {message}"
-        
-        st.session_state.list_chats[st.session_state.actual_chat].append({"role": "bot", "content": bot_response})
 
+        st.session_state.list_chats[st.session_state.actual_chat].append({
+            "role": "bot", 
+            "content": bot_response,
+            "subject": subject.lower()  
+        })
+        
         insert = text("INSERT INTO messages (role, content) VALUES (:role, :content)")
         clean_message = remove_markdown(message[:1000])
 
@@ -132,7 +172,9 @@ if prompt := st.chat_input("Ask me something", key="chat_input"):
             output_file = "output/messages_output.csv"
             df.to_csv(output_file, index=False, quoting=csv.QUOTE_ALL)
 
-        with st.chat_message("Assistant", avatar="🤖"):
+        icon = teacher_icons.get(subject.lower(), teacher_icons.get("other"))
+
+        with st.chat_message("bot", avatar=icon):
             st.markdown(bot_response)
         st.session_state.current_question = ""
 
