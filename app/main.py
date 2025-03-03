@@ -6,18 +6,15 @@ from app.schemas.chat import ChatRequest, ChatResponse
 import logging
 from typing import Dict, Any
 
-# Configure server logging
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 
-# API Configuration
 app = FastAPI(
     title="MentorAI",
     description="API for a virtual tutoring system with multiple agents",
     version="1.0.0",
 )
 
-# CORS Configuration
 origins = [
     "http://localhost",
     "http://localhost:8000",
@@ -32,7 +29,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Initialize planner globally
 planner = Planner()
 
 @app.get("/", response_model=Dict[str, Any])
@@ -45,8 +41,7 @@ async def read_root():
         "description": "API for a virtual tutoring system with multiple agents",
         "endpoints": {
             "chat": "/chat - POST to interact with the teachers",
-            "docs": "/docs - Interactive API documentation",
-            "health": "/health - Service health status"
+            "docs": "/docs - Interactive API documentation"
         }
     }
 
@@ -97,14 +92,13 @@ async def chat_endpoint(request: ChatRequest):
     try:
         logger.debug(f"Received chat request: {request.message}")
         
-        # Use the global planner instance
         response = await planner.process_message(request.message)
         logger.debug(f"Got response from planner: {response}")
         
         return ChatResponse(
-            message=response,
-            subject="math",
-            teacher="Math Teacher"
+            message=response["message"],
+            subject=response["subject"],
+            teacher=response["teacher"]
         )
             
     except Exception as e:
@@ -113,8 +107,3 @@ async def chat_endpoint(request: ChatRequest):
             status_code=500,
             content={"detail": f"Internal server error: {str(e)}"}
         )
-
-@app.get("/health")
-async def health_check():
-    """Endpoint to check the service health status"""
-    return {"status": "healthy", "planner": "active"}

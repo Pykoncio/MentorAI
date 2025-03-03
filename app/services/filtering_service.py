@@ -16,24 +16,22 @@ class FilteringService:
             
             loaded_data = joblib.load(model_path)
             
-            # Verificar si el archivo contiene un diccionario
             if isinstance(loaded_data, dict):
                 self.model = loaded_data.get('model')
                 self.vectorizer = loaded_data.get('vectorizer')
             else:
                 self.model = loaded_data
-                self.vectorizer = TfidfVectorizer()  # Crear un vectorizador por defecto
+                self.vectorizer = TfidfVectorizer()
             
             if self.model is None or self.vectorizer is None:
                 raise ValueError("Model or vectorizer not found in the loaded data.")
             
-            logger.info("Toxic language model loaded successfully.")
+            logger.info("Toxic language model loaded successfully!")
         except Exception as e:
             logger.error(f"Error loading toxic language model: {str(e)}")
             raise
     
     def is_toxic(self, text: str) -> bool:
-        # Convertir el texto a un formato numérico
         text_vector = self.vectorizer.transform([text])
         prediction = self.model.predict(text_vector)
         return prediction[0] == 1
