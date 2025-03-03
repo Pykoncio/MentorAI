@@ -9,6 +9,7 @@ import pymysql
 from sqlalchemy import text
 import os
 import sys
+import pathlib
 core_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "core"))
 sys.path.append(core_path)
 from config import settings
@@ -55,9 +56,16 @@ def remove_markdown(text):
     
     return text
 
+def cargar_css(path):
+    with open(path) as f:
+        st.html(f"<style>{f.read()}</style>")
+
 pymysql.install_as_MySQLdb()
 
 st.set_page_config(page_title="MentorAI Chat", page_icon="🎓")
+
+path = pathlib.Path("app/streamlit/styles/styles.css")
+cargar_css(path)
 
 col1, col2 = st.columns([1, 4])
 
@@ -68,6 +76,8 @@ with col2:
     st.title("MentorAI Chat")
 
 st.markdown("Ask questions across multiple subjects and get specialized assistance from subject-matter experts")
+
+st.divider()
 
 st.sidebar.title("Chat History")
 
@@ -112,7 +122,7 @@ for message in st.session_state.list_chats[st.session_state.actual_chat]:
         with st.chat_message("bot", avatar=icon):
             st.markdown(message["content"])
 
-if prompt := st.chat_input("Ask me something"):
+if prompt := st.chat_input("Ask me something", key="chat_input"):
     st.session_state.current_question = prompt
     st.session_state.list_chats[st.session_state.actual_chat].append({"role": "user", "content": prompt})
 
