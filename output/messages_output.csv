@@ -203,3 +203,177 @@ Some reptiles are viviparous, meaning they give birth to live young rather than 
 "bot","Your message contains inappropriate language. Please rephrase your question."
 "user","how to play fornite "
 "bot","I'm sorry, but I currently don't have a teacher specialized for that question."
+"user","fuck off "
+"bot","Your message contains inappropriate language. Please rephrase your question."
+"user","give me 3 exercises about python "
+"bot","Certainly! Here are three exercises designed to help you practice and enhance your Python skills. Each exercise focuses on different aspects of Python programming, including data structures, algorithms, and object-oriented programming.
+Exercise 1: List Comprehension and Filtering
+Objective: Create a program that filters a list of integers to only include even numbers and squares them.
+
+Instructions:
+Create a list of integers ranging from 1 to 20.
+Use a list comprehension to filter for even numbers.
+Square each of the filtered even numbers.
+Print the resulting list.
+
+Example Output:
+For the input list [1, 2, 3, ..., 20], your output should be [4, 16, 36, 64, 100, 144, 196, 256].
+
+Exercise 2: Basic File I/O
+Objective: Write a program to read a text file and count the frequency of each word.
+
+Instructions:
+Create a text file named sample.txt and populate it with some sample text.
+Write a Python function that reads the file and coun"
+"user","what are adverbs"
+"bot","Adverbs are versatile and essential parts of speech in the English language. They serve to modify verbs, adjectives, other adverbs, or even entire sentences, providing additional information about how, when, where, or to what extent an action is performed. Here’s a structured overview of adverbs:
+Definition and Function
+What is an Adverb?: An adverb is a word that modifies a verb, an adjective, another adverb, or a whole sentence. 
+Function: Adverbs can convey various nuances, including:
+Manner: How something is done (e.g., quickly, carefully).
+Time: When something happens (e.g., now, yesterday).
+Place: Where something happens (e.g., here, everywhere).
+Degree: To what extent or intensity (e.g., very, quite).
+Types of Adverbs
+Adverbs of Manner: Describe how an action is performed.
+Example: She sings beautifully.
+Adverbs of Time: Indicate when an action occurs.
+Example: H"
+"user","give me latest news about chemistry"
+"bot","Here are some highlights from the latest chemistry news as of March 3, 2025:
+Prime’s Fresnillo Generative Target Extended by 120 Metres: Prime Mining Corp has announced an extension of their mineralization target, which is expected to significantly contribute to resource growth. This could have implications for both underground and open-pit mining operations, showcasing the importance of mineral exploration in the mining industry.
+What is a Model Organism? Moving Beyond E. coli: This article discusses the role of Escherichia coli (E. coli) as a crucial model organism in biological research. While E. coli has been extensively used, the conversation is shifting towards exploring other organisms that could provide different insights into cellular processes.
+Powerful Quantum Computers in Years, Not Decades: Microsoft has reported advancements in quantum computing, suggesting that new chips they have developed could revolutionize technology in a manner comparable to "
+"user","where is greek located"
+"bot","I'm sorry, but I currently don't have a teacher specialized for that question."
+"user","give me some exercises to practise python"
+"bot","Absolutely! Here are some engaging Python exercises that will help you practice different concepts and improve your coding skills. Each exercise is designed to target specific areas of Python programming.
+Exercise 1: Fibonacci Sequence
+Objective: Write a function that generates the Fibonacci sequence up to a given number n.
+Task: Create a function fibonacci(n) that returns a list containing the Fibonacci sequence up to n.
+Hint: The Fibonacci sequence starts with 0 and 1, and each subsequent number is the sum of the two preceding ones.
+Exercise 2: Palindrome Checker
+Objective: Build a function to check if a given string is a palindrome.
+Task: Create a function is_palindrome(s) that takes a string s and returns True if it is a palindrome (reads the same forwards and backwards), and False otherwise.
+Hint: Consider using string manipulation methods to simplify your solution.
+Exercise 3: Count Vowels and Consonants
+**Objective:*"
+"user","how do mammals reproduce"
+"bot","Mammals reproduce primarily through a process called sexual reproduction, which involves the combination of genetic material from two parents—typically a male and a female. Here’s a structured breakdown of the process:
+Types of Reproduction in Mammals
+Viviparous Reproduction: Most mammals, including humans, give birth to live young. In this process, the embryo develops inside the mother's body and is nourished through a placenta, which connects the developing fetus to the mother's blood supply.
+Oviparous Reproduction: A few mammals, such as monotremes (e.g., the platypus and echidna), lay eggs. After laying eggs, the mother will incubate them until they hatch.
+Mating and Fertilization
+Mating: Male mammals typically have specialized organs (penis) that allow them to transfer sperm to the female during copulation. This act often involves complex courtship behaviors to attract a mate.
+Fertilization: After mating, sperm travels th"
+"user","how to play fornite"
+"bot","I'm sorry, but I currently don't have a teacher specialized for that question."
+"user","how do mammals reproduce"
+"bot","Mammals reproduce primarily through a process known as sexual reproduction, which involves the combination of genetic material from two parents. Here's a structured overview of how this process works, along with real-world examples to help visualize the concepts:
+Reproductive Structures
+Male Reproductive System: In mammals, males have testes that produce sperm. The sperm is delivered to the female through the male reproductive tract, which includes structures like the penis.
+Female Reproductive System: Females have ovaries that produce eggs (ova). The eggs are released into the reproductive tract, which includes the uterus, where fertilization occurs.
+
+   Example: In humans, the male’s testes produce millions of sperm, while the female’s ovaries release one egg each menstrual cycle.
+Fertilization
+Fertilization occurs when a sperm cell successfully penetrates an egg cell, leading to the formation of a zygote. This can happen internally "
+"user","give me 3 algebra exercises"
+"bot","Certainly! Here are three algebra exercises for you to work on:
+Solving Linear Equations:
+   Solve the following equation for $x$:
+   $$ 3x - 5 = 16 $$
+Factoring Quadratic Expressions:
+   Factor the quadratic expression completely:
+   $$ x^2 - 7x + 10 $$
+Solving a System of Equations:
+   Solve the following system of equations for $x$ and $y$:
+   $$ 
+   \begin{align*}
+   2x + 3y &= 12 \
+   4x - y &= 5 
+   \end{align*} 
+   $$
+
+Feel free to reach out if you need hints or further explanations on these problems!"
+"user","give me 2 algebra problems"
+"bot","Sure! Here are two algebra problems for you to solve:
+Problem 1: Solving a Linear Equation
+   Solve the following equation for $x$:
+   $$ 3x - 7 = 2x + 5 $$
+Problem 2: Quadratic Equation
+   Find the roots of the quadratic equation:
+   $$ x^2 - 4x - 5 = 0 $$
+
+Feel free to ask for hints or explanations if you need help with these problems!"
+"user","how do mammals reproduce"
+"bot","Mammals reproduce primarily through a process called sexual reproduction, which involves the combination of genetic material from two parents. This form of reproduction can be broken down into several key concepts:
+Reproductive Structures
+Male Reproductive System: In most mammals, males produce sperm in the testes. The sperm cells are then delivered through the male reproductive tract.
+Female Reproductive System: Females have ovaries that produce eggs. The eggs are released into the fallopian tubes where fertilization typically occurs.
+Fertilization
+Fertilization occurs when a sperm cell successfully penetrates an egg cell, leading to the formation of a zygote. This can happen internally (inside the female body) or externally (outside the body) depending on the species. In most mammals, fertilization is internal.
+Gestation
+After fertilization, the zygote develops into an embryo. In mammals, this embryo is typically nurture"
+"user","give me 2 algebra problems"
+"bot","Sure! Here are two algebra problems for you to work on:
+Solve the following quadratic equation for $x$:
+   $$2x^2 - 4x - 6 = 0$$
+Solve the system of equations:
+   [
+   \begin{align*}
+   3x + 2y &= 12 \
+   5x - y &= 9
+   \end{align*}
+   ]
+
+Feel free to reach out if you need guidance on how to approach these problems!"
+"user","give me 3 trigonometrics problems"
+"bot","Sure! Here are three trigonometric problems for you to solve:
+Problem 1: Basic Trigonometric Identities
+   Prove the identity:
+   $$ \sin^2(x) + \cos^2(x) = 1 $$
+Problem 2: Solving Trigonometric Equations
+   Solve the equation for $0 \leq x < 2\pi$:
+   $$ 2\sin(x) - 1 = 0 $$
+Problem 3: Application of Trigonometric Functions
+   A right triangle has one angle measuring $30^\circ$. If the length of the side opposite this angle is 5 units, find the lengths of the other two sides.
+
+Feel free to work through these problems, and let me know if you need any hints or further explanations!"
+"user","how do mammals reproduce"
+"bot","Mammals reproduce primarily through a process known as sexual reproduction, which involves the combination of genetic material from two parents to produce offspring. Let’s break down this process into several key concepts and provide real-world examples to help visualize it.
+Key Concepts of Mammalian Reproduction
+Internal Fertilization:
+In mammals, fertilization typically occurs internally. The male deposits sperm into the female's reproductive tract, where it can meet the egg (ovum) produced by the female.
+Example: In humans, during sexual intercourse, sperm travel through the female reproductive system to fertilize the ovum in the fallopian tube.
+Gestation:
+After fertilization, the zygote (fertilized egg) undergoes cell division and develops into an embryo. In most mammals, this embryo implants into the uterus, where it develops over a period of gestation.
+Example: The gestation period for humans is about nine months, while elephants h"
+"user","how does the law of motion work"
+"bot","The law of motion typically refers to Newton's laws of motion, which are fundamental principles that describe the relationship between the motion of an object and the forces acting on it. Let's break down these laws along with real-world examples to help you visualize them.
+Newton's Laws of Motion
+First Law (Law of Inertia):
+Statement: An object at rest stays at rest, and an object in motion stays in motion with the same speed and in the same direction unless acted upon by a net external force.
+Real-World Example: Consider a book resting on a table. It will remain stationary unless someone pushes it (an external force). Similarly, if you're riding in a car that suddenly stops, your body tends to lurch forward because it wants to continue moving at the same speed.
+Second Law (Law of Acceleration):
+Statement: The acceleration of an object is directly proportional to the net force acting on it and inversely proportional to its mass. This can"
+"user","give me some trigonometrics exercises"
+"bot","Certainly! Here are some trigonometric exercises for you to practice. They cover a range of topics including trigonometric identities, solving equations, and applications in geometry. Try to work through them without looking at the answers first!
+Exercises:
+Trigonometric Identities:
+   Prove the following identity:
+   $$ \sin^2(x) + \cos^2(x) = 1 $$
+Solving Trigonometric Equations:
+   Solve the equation for $0 \leq x < 2\pi$:
+   $$ 2\sin(x) - 1 = 0 $$
+Using the Unit Circle:
+   Find the exact values of the following:
+   $$ \sin\left(\frac{\pi}{6}\right), \quad \cos\left(\frac{\pi}{3}\right), \quad \tan\left(\frac{\pi}{4}\right) $$
+Sum and Difference Formulas:
+   Use the sum formula for sine to find:
+   $$ \sin\left(\frac{\pi}{4} + \frac{\pi}{3}\right) $$
+Trigonometric Applications:
+   A ladder is leaning against a wall, forming an angle of $60^\circ$ with the ground. If the ladder is 10 feet long, how high does the top of the ladder reach on "
+"user","fock off"
+"bot","I'm sorry, but I currently don't have a teacher specialized for that question."
+"user","fuck off"
+"bot","Your message contains inappropriate language. Please rephrase your question."
