@@ -19,6 +19,14 @@ Borja Bravo Casermeiro – [Github](https://github.com/boorjabraavo21) – Email
 
 MentorAI is a virtual tutoring system that utilizes intelligent agents to provide tutoring in a variety of academic subjects using advanced artificial intelligence techniques.
 
+## 📑 Table of Contents
+- [Installation Guide with Docker](#️-installation-guide-with-docker)
+- [Installation Guide without Docker (Not Recommended)](#installation-guide-without-docker-not-recommended)
+- [Project Structure](#-project-structure)
+- [File Descriptions](#-file-descriptions)
+- [Presentation Resources](#-presentation-resources)
+- [Bibliography](#-bibliography)
+
 ## 🛠️ **Installation Guide with Docker**
 
 This is the easiest way to install and run MentorAI using Docker and Docker Compose.
@@ -47,6 +55,8 @@ MYSQL_DATABASE=your_mysql_database
 `docker-compose -f app/docker/docker-compose.yml up --build`
 
 This will start the FastAPI server on port 8000 and the Streamlit application on port 8501, as well as the MySQL server on the port 3307.
+
+Once the containers are running, access the Streamlit web interface at: `http://localhost:8501`
 
 ## **Installation Guide without Docker (Not Recommended)**
 
@@ -100,6 +110,8 @@ To start the Streamlit application:
 
 `streamlit run app/streamlit/streamlit_app.py`
 
+When deployment is complete, open your web browser and navigate to: `http://localhost:8501` to access the MentorAI interface.
+
 ## 📂 **Project Structure**
 ```markdown
 .env  
@@ -139,11 +151,16 @@ app/
 │   ├── filtering_service.py  
 │   └── openai_service.py  
 └── streamlit/  
-    └── streamlit_app.py  
+    └── streamlit_app.py
+docs/  
+├── logo_mentorai.png  
+└── Presentacion_MentorAI.pdf  
 output/  
 └── messages_output.csv  
 README.md  
 requirements.txt  
+src/
+└── templates/
 ```
 
 
@@ -171,7 +188,7 @@ This file uses pydantic to configure the project. It defines the global configur
 
 `models`
 
-Contains the models used in the project, including the model to filter inappropriate language. These models structure and validate the data used within the application.
+This directory contains the model used in the project for filtering inappropriate language. The model validates all data within the application before it's processed by the APIs.
 
 `schemas`
 
@@ -190,6 +207,11 @@ This directory contains the services used by the agents, including the OpenAI se
 
 The Streamlit application provides a graphical interface for interacting with the tutoring system. It includes a chat where users can input questions and displays the conversation history during the session.
 
+## 🎬 Presentation Resources
+- [Project Presentation Video](https://www.youtube.com/watch?v=5s27SuEfBg0)
+- [Project Canvas](https://www.canva.com/design/DAGgZwpR4OY/wBnTFRACWRTl7wDuxULeVw/edit?utm_content=DAGgZwpR4OY&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton)
+- [Presentation PDF](/docs/Presentacion_MentorAI.pdf)
+
 ## 📚 Bibliography
 * [Streamlit Documentation](https://docs.streamlit.io/)
 
@@ -198,3 +220,7 @@ The Streamlit application provides a graphical interface for interacting with th
 * [Docker Documentation](https://docs.docker.com/)
 
 * [Mini-course on SQLAlchemy](https://www.youtube.com/watch?v=XSAjQDM8ZS4)
+
+* [OpenAI Api Reference](https://platform.openai.com/docs/api-reference/introduction)
+
+* [Advances in Intelligent Tutoring Systems](https://link.springer.com/book/10.1007/978-3-642-14363-2) - Nkambou, R., Mizoguchi, R., & Bourdeau, J. (2010). Springer Berlin Heidelberg.
