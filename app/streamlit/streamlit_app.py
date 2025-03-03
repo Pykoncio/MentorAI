@@ -67,7 +67,6 @@ st.set_page_config(page_title="MentorAI Chat", page_icon="🎓")
 path = pathlib.Path("app/streamlit/styles/styles.css")
 cargar_css(path)
 
-st.title("MentorAI Chat")
 col1, col2 = st.columns([1, 4])
 
 with col1:
@@ -77,6 +76,8 @@ with col2:
     st.title("MentorAI Chat")
 
 st.markdown("Ask questions across multiple subjects and get specialized assistance from subject-matter experts")
+
+st.divider()
 
 st.sidebar.title("Chat History")
 
