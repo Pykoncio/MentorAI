@@ -1,12 +1,47 @@
 import streamlit as st
 import requests
+import pandas as pd
 import sys
+import re
 import os
+import csv
 import pymysql
 from sqlalchemy import text
+import os
+import sys
 core_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "core"))
 sys.path.append(core_path)
 from config import settings
+
+def remove_markdown(text):
+   # Remove inline code formatting and return only the inner text.
+    text = re.sub(r'`(.+?)`', r'\1', text)
+    
+    # Remove bold/italic formatting by removing ** or __ markers around text.
+    text = re.sub(r'(\*\*|__)(.*?)\1', r'\2', text)
+    
+    # Remove Markdown headers (e.g., "# Header") by matching 1 to 6 '#' symbols
+    text = re.sub(r'^\s{0,3}#{1,6}\s*', '', text, flags=re.MULTILINE)
+    
+    # Remove blockquote markers ('>') at the beginning of a line.
+    text = re.sub(r'^\s{0,3}>\s?', '', text, flags=re.MULTILINE)
+    
+    # Remove list markers for unordered lists (e.g., '-', '*', '+') at the beginning of a line.
+    text = re.sub(r'^\s*[\*\-\+]\s+', '', text, flags=re.MULTILINE)
+    
+    # Remove numerical list markers (e.g., "1.", "2)") at the beginning of a line.
+    text = re.sub(r'^\s*\d+[\.\)]\s+', '', text, flags=re.MULTILINE)
+    
+    # Remove horizontal rule lines made entirely of dashes.
+    text = re.sub(r'\n-{3,}\n', '\n', text)
+    
+    # Remove horizontal rule lines made entirely of asterisks.
+    text = re.sub(r'\n\*{3,}\n', '\n', text)
+    
+    # Remove backslashes used to escape special Markdown characters.
+    text = re.sub(r'\\([\\`*_{}\[\]()#+\-.!])', r'\1', text)
+    
+    return text
 
 pymysql.install_as_MySQLdb()
 
@@ -17,35 +52,31 @@ st.title("MentorAI Chat")
 st.sidebar.title("Chat History")
 
 if "list_chats" not in st.session_state:
-    st.session_state.list_chats = [[]] # Directamente meto aquí los mensajes de cada chat
+    st.session_state.list_chats = [[]] 
 if "actual_chat" not in st.session_state:
     st.session_state.actual_chat = 0
 
-# Si el chat actual está guardado con mensajes, se puede iniciar uno nuevo
 if st.sidebar.button("New chat", icon=":material/add:") and len(st.session_state.list_chats[st.session_state.actual_chat]) > 0:
     st.session_state.list_chats.insert(0, [])
     st.session_state.actual_chat = 0
 
-# if "messages" not in st.session_state:
-#     st.session_state.messages = []  
 if "current_question" not in st.session_state:
     st.session_state.current_question = ""
 
 conn = st.connection("sql",
     dialect="mysql",
-    host=settings.HOST,
-    username=settings.USER,
-    password=settings.PASSWORD,
-    database=settings.DATABASE,
-    port=settings.PORT)
+    host=settings.MYSQL_HOST,
+    username=settings.MYSQL_USER,
+    password=settings.MYSQL_PASSWORD,
+    database=settings.MYSQL_DATABASE)
 
 for message in st.session_state.list_chats[st.session_state.actual_chat]:
     if message["role"] == "user":
-        with st.chat_message("user"):
+        with st.chat_message("user", avatar="👤"):
             st.markdown(message["content"])
     else:
-        with st.chat_message("bot"):
-            st.markdown(message["content"])
+        with st.chat_message("bot", avatar="🤖"):
+            st.markdown(message["content"], )
 
 if prompt := st.chat_input("Ask me something"):
     st.session_state.current_question = prompt
@@ -55,7 +86,10 @@ if prompt := st.chat_input("Ask me something"):
                id INT AUTO_INCREMENT PRIMARY KEY,
                role VARCHAR(50) NOT NULL,
                content VARCHAR(1000) NOT NULL);""")
-    insert = text(f"""INSERT INTO messages (role, content) VALUES ("user", "{prompt}")""")
+    
+    clean_prompt = remove_markdown(prompt)
+
+    insert = text(f"""INSERT INTO messages (role, content) VALUES ("user", "{clean_prompt}")""")
 
     with conn.session as session:
         session.execute(create_table)
@@ -63,10 +97,10 @@ if prompt := st.chat_input("Ask me something"):
         session.execute(insert)
         session.commit()
 
-    with st.chat_message("user"):
+    with st.chat_message("user", avatar="👤"):
         st.markdown(prompt)
 
-    response = requests.post("http://127.0.0.1:8000/chat", json={"message": st.session_state.current_question})            
+    response = requests.post("http://fastapi:8000/chat", json={"message": st.session_state.current_question})            
 
     if response.status_code == 200:
         data = response.json()
@@ -77,10 +111,18 @@ if prompt := st.chat_input("Ask me something"):
         
         st.session_state.list_chats[st.session_state.actual_chat].append({"role": "bot", "content": bot_response})
 
-        insert = text(f"""INSERT INTO messages (role, content) VALUES ("bot", "{message[:1000]}")""")
+        insert = text("INSERT INTO messages (role, content) VALUES (:role, :content)")
+        clean_message = remove_markdown(message[:1000])
+
         with conn.session as session:
-            session.execute(insert)
+            session.execute(insert, {"role": "bot", "content": clean_message})
             session.commit()
+
+            engine = session.get_bind()
+            df = pd.read_sql("SELECT role, content FROM messages", engine)
+            df['content'] = df['content'].apply(remove_markdown)
+            output_file = "output/messages_output.csv"
+            df.to_csv(output_file, index=False, quoting=csv.QUOTE_ALL)
 
         with st.chat_message("Assistant", avatar="🤖"):
             st.markdown(bot_response)
@@ -95,7 +137,6 @@ for i in range(len(st.session_state.list_chats)):
             print(f"Total de chats: {len(st.session_state.list_chats)}")
             print(f"Chat actual: {st.session_state.list_chats[st.session_state.actual_chat]}")
 
-            # Si actualmente estoy en un chat nuevo sin mensajes, lo borro y paso al seleccionado en el sidebar
             if st.session_state.list_chats[st.session_state.actual_chat] == []:
                 print("Borrando chat...")
                 st.session_state.list_chats.pop(st.session_state.actual_chat)
