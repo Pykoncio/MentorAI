@@ -213,6 +213,8 @@ The Streamlit application provides a graphical interface for interacting with th
 - [Presentation PDF](/docs/Presentacion_MentorAI.pdf)
 
 ## 📚 Bibliography
+* [Toxic Comment Classification Challenge, Dataset from Kaggle](https://www.kaggle.com/competitions/jigsaw-toxic-comment-classification-challenge/data)
+
 * [Streamlit Documentation](https://docs.streamlit.io/)
 
 * [FastAPI Documentation](https://fastapi.tiangolo.com/)
