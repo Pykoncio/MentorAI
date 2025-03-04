@@ -70,7 +70,7 @@ cargar_css(path)
 col1, col2 = st.columns([1, 4])
 
 with col1:
-    st.image("logo_mentorai.png", width=200)
+    st.image("docs/logo_mentorai.png", width=200)
 
 with col2:
     st.title("MentorAI Chat")
